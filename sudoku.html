@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	<title>SudokuMeister</title>
+	
+	<!-- Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<!-- CSS -->
+	<link rel="stylesheet" media="all" type="text/css" href="./sudokuJS.css">
+	<link rel="stylesheet" href="./main.css" />
+
+	<!-- JS -->
+	<script type="text/javascript" src="./sudokuJS.js"></script>
+	<script type="text/javascript" src="./dayNight.js"></script>
+
+</head>
+
+<body>
+	<div class="container">
+        <header><div class="logo"><img src="logo.png" /></div></header>
+		
+
+		<div class="row">
+
+			<!-- Menu trudnosci -->
+			<div class="col-md-3">
+				<p class="diff-title">Poziom trudności</p>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-secondary js-generate-board-btn--easy">Easy</button>
+					<button type="button" class="btn btn-secondary js-generate-board-btn--medium">Medium</button>
+					<button type="button" class="btn btn-secondary js-generate-board-btn--hardt">Hard</button>
+					<button type="button" class="btn btn-secondary js-generate-board-btn--very-hard">Very Hard</button>
+				</div>
+			</div>
+
+			<!-- Pole gry -->
+			<div class="col-md-6">
+				<div id="sudoku" class="sudoku-board"></div>
+			</div>
+
+			<!-- Narzędzia pomocnicze -->
+			<div class="col-md-3">
+
+				<!-- Dzień/noc -->
+				<label class="switch">
+					<input id="dayNight" type="checkbox">
+					<span class="slider round"></span>
+				</label>
+			
+				<p class="diff-title">Pomocy</p>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-secondary js-solve-step-btn">Troszkę</button>
+					<button type="button" class="btn btn-secondary js-solve-all-btn">Wszystko</button>
+					<button type="button" class="btn btn-secondary js-clear-board-btn">Wyczyść</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- JS -->
+	<script>
+		var	$candidateToggle = $(".js-candidate-toggle"),
+			$generateBoardBtnEasy = $(".js-generate-board-btn--easy"),
+			$generateBoardBtnMedium = $(".js-generate-board-btn--medium"),
+			$generateBoardBtnHard = $(".js-generate-board-btn--hard"),
+			$generateBoardBtnVeryHard = $(".js-generate-board-btn--very-hard"),
+
+			$solveStepBtn = $(".js-solve-step-btn"),
+			$solveAllBtn = $(".js-solve-all-btn"),
+			$clearBoardBtn = $(".js-clear-board-btn"),
+
+			mySudokuJS = $("#sudoku").sudokuJS({
+				difficulty: "very hard"
+				//change state of our candidate showing checkbox on change in sudokuJS
+				,candidateShowToggleFn : function(showing){
+					$candidateToggle.prop("checked", showing);
+				}
+			});
+
+		$solveStepBtn.on("click", mySudokuJS.solveStep);
+		$solveAllBtn.on("click", mySudokuJS.solveAll);
+		$clearBoardBtn.on("click", mySudokuJS.clearBoard);
+
+		$generateBoardBtnEasy.on("click", function(){
+			mySudokuJS.generateBoard("easy");
+		});
+		$generateBoardBtnMedium.on("click", function(){
+			mySudokuJS.generateBoard("medium");
+		});
+		$generateBoardBtnHard.on("click", function(){
+			mySudokuJS.generateBoard("hard");
+		});
+		$generateBoardBtnVeryHard.on("click", function(){
+			mySudokuJS.generateBoard("very hard");
+		});
+
+		$candidateToggle.on("change", function(){
+			if($candidateToggle.is(":checked"))
+				mySudokuJS.showCandidates();
+			else
+				mySudokuJS.hideCandidates();
+		});
+		$candidateToggle.trigger("change");
+	</script>
+    <footer>
+        <a href="https://github.com/pocketjoso/sudokuJS">Algorytm rozwiązujący na licencji MIT.</a>
+        <p>Uniwersytet Pedagogiczny im. Komisji Edukacji Narodowej w Krakowie</p>
+    </footer>
+</body>
+</html>

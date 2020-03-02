@@ -182,6 +182,7 @@
 				if(board[i].val === null)
 					return false;
 			}
+			alert("Gratulacje!");
 			return true;
 		};
 
